@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/FlutterProjects/flutter_supabase/linux"
+    "cmake.sourceDirectory": "C:/FlutterProjects/flutter_supabase/linux",
+    "java.compile.nullAnalysis.mode": "automatic"
 }

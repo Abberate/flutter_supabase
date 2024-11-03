@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_supabase/pages/home_page.dart';
+import 'package:flutter_supabase/pages/start_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -10,20 +12,57 @@ void main() async {
   String supabaseUrl = dotenv.env['SUPABASE_URL'] ?? '';
   String supabaseKey = dotenv.env['SUPABASE_KEY'] ?? '';
   await Supabase.initialize(url:supabaseUrl , anonKey: supabaseKey);
-  runApp(const MainApp());
+  runApp( const MyApp());
 }
 
-class MainApp extends StatelessWidget{
-  const MainApp({super.key});
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Supabase',
+      theme: ThemeData(),
+      home:  const AuthPage(),
     );
   }
 }
+
+
+class AuthPage extends StatefulWidget {
+  const AuthPage({super.key});
+  @override
+  State<AuthPage> createState() => _AuthPageState();
+}
+
+class _AuthPageState extends State<AuthPage> {
+  final SupabaseClient supabase = Supabase.instance.client;
+  User? _user;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getAuth();
+    super.initState();
+  }
+
+  //get the current user
+  Future<void> getAuth() async{
+    setState(() {
+      _user = supabase.auth.currentUser;
+    });
+    supabase.auth.onAuthStateChange.listen((event){
+      setState(() {
+        _user = event.session?.user;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _user == null ? StartPage() :  HomePage();
+  }
+}
+
