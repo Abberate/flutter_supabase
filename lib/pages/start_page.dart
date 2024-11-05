@@ -128,6 +128,8 @@ class _StartPageState extends State<StartPage> {
                               setState(() {
                                 _signInLoading = false;
                               });
+                              _emailController.clear();
+                              _passwordController.clear();
                             } catch (e) {
                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erreur! Identifiant ou mot de passe'),backgroundColor: Colors.red,));
                               setState(() {
@@ -183,9 +185,8 @@ class _StartPageState extends State<StartPage> {
                                     setState(() {
                                       _signUpLoading = false;
                                     });
-
-
-
+                                    _emailController.clear();
+                                    _passwordController.clear();
                                   } catch (e) {
                                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erreur! email de confirmation non envoyer'),backgroundColor: Colors.red));
                                     setState(() {
